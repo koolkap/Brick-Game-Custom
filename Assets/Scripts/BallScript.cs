@@ -12,4 +12,9 @@ public class BallScript : MonoBehaviour {
 	void Update () {
 	
 	}
+	//Destroy the ball prefab
+	//In the score reduce the life by one
+	void Die(){
+		Destroy (gameObject);
+	}	
 }
