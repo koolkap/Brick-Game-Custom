@@ -14,7 +14,10 @@ public class BallScript : MonoBehaviour {
 	}
 	//Destroy the ball prefab
 	//In the score reduce the life by one
-	void Die(){
+	public void Die(){
 		Destroy (gameObject);
+		GameObject paddleOBject = GameObject.Find ("Paddle");
+		PaddlerScript paddle = paddleOBject.GetComponent<PaddlerScript> ();
+		paddle.LooseLife ();
 	}	
 }

@@ -4,13 +4,23 @@ using System.Collections;
 public class PaddlerScript : MonoBehaviour
 {
 	float paddleSpeed = 10f; //This could be dynamic as power up can change the scenario
-
+	public GameObject ball;
+	GameObject attachedBall;
 	// Use this for initialization
 	void Start ()
 	{
-	
+		SpawnBall ();
 	}
-	
+	void SpawnBall(){
+		if (ball == null) {
+			Debug.LogError ("Forgot Ball");
+			return;
+		}
+		attachedBall = (GameObject)Instantiate (ball, transform.position + new Vector3 (0f, 0.45f, 0.0f), Quaternion.identity);
+	}
+	public void LooseLife(){
+		SpawnBall ();
+	}
 	// Update is called once per frame
 	void Update ()
 	{
@@ -22,8 +32,16 @@ public class PaddlerScript : MonoBehaviour
 		if (transform.position.x < -3.0f) {
 			transform.position = new Vector3(-3.0f, transform.position.y, transform.position.z);
 		}
-		if(Input.GetButtonDown("PlayGame")){
-			//TODO: lauch the ball make the surface non-sticky as per power.
+		if (attachedBall) {
+			Rigidbody ballrigidbody = attachedBall.GetComponent<Rigidbody> ();
+			ballrigidbody.position = transform.position + new Vector3 (0f, 0.45f, 0f);
+
+			if (Input.GetButtonDown ("PlayGame")) {
+				ballrigidbody.isKinematic = false;
+
+				ballrigidbody.AddForce (300f * Input.GetAxis ("Horizontal"), 300f, 0);
+				attachedBall = null;
+			}
 		}
 	}
 }
